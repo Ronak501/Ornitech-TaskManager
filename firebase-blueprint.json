@@ -1,0 +1,125 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with customizable display name and presence",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName"]
+    },
+    "SharedList": {
+      "title": "SharedList",
+      "description": "Collaborative to-do list shared among team members",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "ownerEmail": { "type": "string" },
+        "memberUids": { "type": "array", "items": { "type": "string" } },
+        "members": { "type": "object" },
+        "isDefault": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "ownerId", "memberUids"]
+    },
+    "EODReport": {
+      "title": "EODReport",
+      "description": "Daily End of Day progress report submitted by workspace team members",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "listId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userPhotoURL": { "type": "string" },
+        "userRole": { "type": "string", "enum": ["founder", "manager", "employee"] },
+        "date": { "type": "string" },
+        "summary": { "type": "string" },
+        "completedTasks": { "type": "array", "items": { "type": "string" } },
+        "inProgressTasks": { "type": "array", "items": { "type": "string" } },
+        "blockers": { "type": "string" },
+        "planForTomorrow": { "type": "string" },
+        "hoursWorked": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["listId", "userId", "userName", "date", "createdAt"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Real-time task item on a shared or personal list",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "category": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "reminderDismissed": { "type": "boolean" },
+        "assignedTo": {
+          "type": "object",
+          "properties": {
+            "uid": { "type": "string" },
+            "displayName": { "type": "string" },
+            "email": { "type": "string" },
+            "photoURL": { "type": "string" }
+          }
+        },
+        "createdBy": {
+          "type": "object",
+          "properties": {
+            "uid": { "type": "string" },
+            "displayName": { "type": "string" },
+            "email": { "type": "string" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "completedBy": {
+          "type": "object",
+          "properties": {
+            "uid": { "type": "string" },
+            "displayName": { "type": "string" }
+          }
+        }
+      },
+      "required": ["title", "completed", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "entity": "User",
+      "description": "User profiles searchable for sharing and assignments"
+    },
+    "/lists/{listId}": {
+      "entity": "SharedList",
+      "description": "Collaborative lists collection"
+    },
+    "/lists/{listId}/tasks/{taskId}": {
+      "entity": "Task",
+      "description": "Real-time collaborative tasks belonging to a shared list"
+    },
+    "/lists/{listId}/eodReports/{reportId}": {
+      "entity": "EODReport",
+      "description": "Real-time daily End of Day updates submitted by workspace members"
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "entity": "Task",
+      "description": "User personal tasks (backward compatibility)"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Collaborative To-Do List",
+  "description": "A real-time collaborative workspace with Google Sign-In, 3-tier team roles (Founder, Manager, Employee), task assignments, due date reminders, and daily employee End-of-Day (EOD) reporting powered by Firebase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
